@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,9 +11,18 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
   hidden: boolean = true;
+  mobileNav: boolean = false;
+
+  constructor(public router: Router) {}
+
 
   toggleProfile() {
     this.hidden = !this.hidden;
-    console.log('Dropdown visibility toggled:', this.hidden);
   }
+
+  toggleMobileNav() {
+    this.mobileNav = !this.mobileNav;
+  }
+
+
 }

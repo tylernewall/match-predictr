@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 
 <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <!-- Stats Section -->
     <dl class="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
         <div class="flex flex-col bg-gray-400/5 p-8">
             <dt class="text-sm/6 font-semibold text-gray-600">Total points this season</dt>
@@ -20,186 +21,107 @@
         </div>
     </dl>
 
+    <!-- Today's Questions Section -->
+    <div *ngIf="numOfAnswersSubmitted < 3; else threeAnswersSubmitted">
+        <h3 class="text-2xl mt-5">Today's Questions</h3>
+        <div *ngIf="questions?.length; else noQuestions">
+            <h3 class="text-xl mt-4 underline">Easy</h3>
+            <ul role="list" class="divide-y divide-gray-100">
+                <li *ngFor="let question of questions" class="flex items-center justify-between gap-x-6 pb-5 pt-3">
+                    <div class="min-w-0">
+                        <div class="flex items-start gap-x-3">
+                            <p class="text-sm/6 font-semibold text-gray-900">{{ question.description }}</p>
+                            <p *ngIf="question.answered"
+                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                Predicted
+                            </p>
+                        </div>
+                        <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
+                            <p class="whitespace-nowrap">{{ question.homeTeam }} v {{ question.awayTeam }}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-none items-center gap-x-4">
+                        <button *ngIf="!question.answered" (click)="openModal(question.id)"
+                            class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">
+                            Choose prediction
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-    <h3 class="text-2xl mt-5">Todays questions</h3>
-    <div>
-        <h3 class="text-xl mt-4 underline">Easy</h3>
-        <ul role="list" class="divide-y divide-gray-100">
-            <li class="flex items-center justify-between gap-x-6 pb-5 pt-3">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                        class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-            <li class="flex items-center justify-between gap-x-6 py-5">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-            <li class="flex items-center justify-between gap-x-6 py-5">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-        </ul>
+        <ng-template #noQuestions>
+            <p>No questions available.</p>
+        </ng-template>
     </div>
 
-    <div>
-        <h3 class="text-xl mt-4 underline">Medium</h3>
-        <ul role="list" class="divide-y divide-gray-100">
-            <li class="flex items-center justify-between gap-x-6 pb-5 pt-3">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                        class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-            <li class="flex items-center justify-between gap-x-6 py-5">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-            <li class="flex items-center justify-between gap-x-6 py-5">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <!-- Predictions Section -->
+    <ng-template #threeAnswersSubmitted>
+        <div class="mt-10">
+            <p class="text-2xl">
+                Hang tight! At the end of the matches, your score will be calculated! <br />You predicted:
+            </p>
+            <ul role="list" class="divide-y divide-gray-100">
+                <ng-container *ngFor="let question of questions">
+                    <li *ngIf="question.answered" class="flex items-center justify-between gap-x-6 pb-5 pt-3">
+                        <div class="min-w-0">
+                            <div class="flex items-start gap-x-3">
+                                <p class="text-sm/6 font-semibold text-gray-900">{{ question.description }}</p>
+                                <p
+                                    class="mt-0.5 whitespace-nowrap rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-900 ring-1 ring-inset ring-green-600/20">
+                                    You predicted: {{ getPredictedOptionTitle(question) }}
+                                </p>
+                            </div>
+                            <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
+                                <p class="whitespace-nowrap">{{ question.homeTeam }} v {{ question.awayTeam }}</p>
+                            </div>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
+    </ng-template>
 
-    <div>
-        <h3 class="text-xl mt-4 underline">Hard</h3>
-        <ul role="list" class="divide-y divide-gray-100">
-            <li class="flex items-center justify-between gap-x-6 pb-5 pt-3">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                        class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                        Complete</p> -->
+    <!-- Modal -->
+    <div *ngIf="modalVisible" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div
+                    class="relative w-2/4 transform overflow-hidden rounded-lg bg-white px-2 pb-2 pt-5 text-left shadow-xl transition-all sm:my-8 sm:p-6">
+                    <div class="flex flex-col items-center">
+                        <h3 class="text-center text-base font-semibold text-gray-900">{{ selectedQuestion?.description
+                            }}</h3>
+                        <div class="mt-2 space-y-5 w-full flex flex-col items-center">
+                            <button *ngFor="let option of optionsToDisplay" (click)="selectAnswer(option.id)" [ngClass]="{
+                'bg-green-500 text-white': selectedAnswerId === option.id,
+                'bg-white text-black': selectedAnswerId !== option.id,
+                'hover:bg-gray-100': selectedAnswerId !== option.id
+            }" class="inline-flex w-2/3 justify-center rounded-md border border-gray-200 px-3 py-2 text-sm font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                {{ option.title }}
+                            </button>
+                        </div>
                     </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-            <li class="flex items-center justify-between gap-x-6 py-5">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-            <li class="flex items-center justify-between gap-x-6 py-5">
-                <div class="min-w-0">
-                    <div class="flex items-start gap-x-3">
-                        <p class="text-sm/6 font-semibold text-gray-900">Who will win?</p>
-                        <!-- <p
-                                class="mt-0.5 whitespace-nowrap rounded-md bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                                Complete</p> -->
-                    </div>
-                    <div class="mt-1 flex items-center gap-x-2 text-xs/5 text-gray-500">
-                        <p class="whitespace-nowrap">Manchester United v Chelsea</p>
-                    </div>
-                </div>
-                <div class="flex flex-none items-center gap-x-4">
-                    <a href="#"
-                        class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Choose
-                        prediction<span class="sr-only">, GraphQL API</span></a>
-                </div>
-            </li>
-        </ul>
-    </div>
 
+                    <div class="flex justify-center mt-5 sm:mt-6">
+                        <div class="flex space-x-4">
+                            <button (click)="closeModal()"
+                                class="inline-flex justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500">
+                                Cancel
+                            </button>
+                            <button (click)="submitAnswerForQuestion()" [disabled]="selectedAnswerId == 0" [ngClass]="{
+                'bg-gray-500 hover:bg-gray-400': selectedAnswerId == 0,
+                'bg-indigo-600 hover:bg-indigo-500': selectedAnswerId != 0
+            }" class="inline-flex justify-center rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm">
+                                Submit prediction
+                            </button>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

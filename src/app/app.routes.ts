@@ -5,11 +5,13 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { UserScoresComponent } from './pages/user-scores/user-scores.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { TeamsComponent } from './pages/teams/teams.component';
+import { TeamDetailsComponent } from './pages/team-details/team-details.component';
 
 export const routes: Routes = [
      { path: 'dashboard', component: DashboardComponent },
      { path: 'your-scores', component: UserScoresComponent },
      { path: 'leaderboard', component: LeaderboardComponent },
      { path: 'teams', component: TeamsComponent },
+     { path: 'teams/:id', component: TeamDetailsComponent },
      { path: '**', component: PageNotFoundComponent },
 ];
